@@ -1,11 +1,16 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import icon from '../assets/icon.svg';
-import './App.global.css';
+import icon from '../../assets/icon.svg';
+import '../App.global.css';
+import Button from '@material-ui/core/Button';
 
 const Hello = () => {
   return (
     <div>
+      {/* Testing Material UI components */}
+      <Button variant="contained" color="primary">
+        Hello World
+      </Button>
       <div className="Hello">
         <img width="200px" alt="icon" src={icon} />
       </div>

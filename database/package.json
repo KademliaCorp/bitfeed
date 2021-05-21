@@ -1,0 +1,18 @@
+{
+  "name": "database",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate": "node-pg-migrate",
+    "migrate:up": "DATABASE_URL=postgres://postgres:dev_123@localhost:5432/bitfeed npm run migrate up",
+    "migrate:down": "DATABASE_URL=postgres://postgres:dev_123@localhost:5432/bitfeed npm run migrate down"
+  },
+  "author": "Hedzer",
+  "license": "ISC",
+  "dependencies": {
+    "node-pg-migrate": "^5.9.0",
+    "pg": "^8.6.0"
+  }
+}

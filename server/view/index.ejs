@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width">
+		<title>Bitfeed</title>
+		<script type="module">
+			document.documentElement.classList.remove('no-js');
+			document.documentElement.classList.add('js');
+		</script>
+        <script src="<%= immutable('/component/page-nav.js') %>" type="module"></script>
+        <link rel="stylesheet" href="<%= immutable('/css/reset.css') %>">
+        <link rel="stylesheet" href="<%= immutable('/css/theme.css') %>">
+		<link rel="preconnect" href="https://fonts.gstatic.com">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap">
+	</head>
+	<body>
+		<page-nav></page-nav>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.1.0/quicklink.umd.js"></script>
+		<script src="http://instantclick.io/v3.1.0/instantclick.min.js"></script>
+	</body>
+</html>

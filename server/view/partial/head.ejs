@@ -1,0 +1,15 @@
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>Bitfeed</title>
+<script type="module">
+	document.documentElement.classList.remove('no-js');
+	document.documentElement.classList.add('js');
+</script>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap">
+<link rel="icon" href="<%= immutable('/image/favicon.ico') %>">
+<%- include('./route-cache') %>
+<%- include('../generated/prefetches') %>
+<%- include('./reset.css.ejs') %>
+<%- include('./theme.css.ejs') %>

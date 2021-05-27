@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
 		return res.end();
 	}
 	res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
-	res.render('index', { title: 'Express', immutable: staticify.getVersionedPath });
+	res.render('create', { immutable: staticify.getVersionedPath });
 });
 
 module.exports = router;

@@ -1,41 +1,42 @@
-const createError = require('http-errors');
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const staticify = require('./helper/staticify');
-const toString = require('stream-to-string')
-const ejs = require('ejs');
+const immutable_route = require('./middleware/immutable-route');
+const versioned_route = require('./middleware/versioned-route');
+const recursive = require('recursive-readdir');
 const fs = require('fs');
-const immutable = require('./middleware/immutable');
-
-const indexRouter = require('./route/index');
-const usersRouter = require('./route/users');
-
 const app = express();
+const routes = require('./routes');
+const generators = require('./generators');
+const locals = require('./locals');
+const middleware = require('./middleware');
 
-// view engine setup
-app.set('views', path.join(__dirname, 'view'));
-app.set('view engine', 'ejs');
+(async () => {
+	// generate prefetch & hash version
+	await generators(app);
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+	// set locals
+	locals(app);
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use(immutable);
+	// setup middleware
+	middleware(app);
 
-// error handler
-app.use(function(err, req, res, next) {
-	// set locals, only providing error in development
-	res.locals.message = err.message;
-	res.locals.error = req.app.get('env') === 'development' ? err : {};
+	//apply routes
+	routes(app);
 
-	// render the error page
-	res.status(err.status || 500);
-	res.render('error');
-});
+	// app.use('/', (req, res, next) => res.redirect(`/${config.version}`));
 
+	// error handler
+	app.use(function (err, req, res, next) {
+		// set locals, only providing error in development
+		res.locals.message = err.message;
+		res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+		// render the error page
+		res.status(err.status || 500);
+		res.render('error');
+	});
+})()
 module.exports = app;

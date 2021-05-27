@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head>
+		<%- include('./partial/head') %>
+	</head>
+	<body>
+		<%- include('./partial/navbar') %>
+
+		<style>
+			main {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				margin-top: 20vh;
+			}
+
+			form, form div {
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+			}
+
+			form div {
+				margin-bottom: 1em;
+			}
+
+			form label, form input {
+				width: 20em;
+			}
+
+			label {
+				text-transform: uppercase;
+				color: var(--primary-text-color);
+				letter-spacing: 1.1px;
+			}
+
+			@media screen and (max-width: 20em) {
+				form label, form input {
+					width: 100%;
+				}
+			}
+		</style>
+		<main>
+			<form>
+				<div>
+					<label for="username">Username</label>
+					<input id="username" type="text" title="username" placeholder="username" autofocus />
+				</div>
+
+				<div>
+					<label for="password">Password</label>
+					<input id="password" type="password" title="username" placeholder="password" />
+				</div>
+
+				<button type="submit" class="btn">Login</button>
+				<a class="forgot" href="#">Forgot Username?</a>
+			</form>
+		</main>
+
+		<%- include('./partial/footer') %>
+	</body>
+</html>

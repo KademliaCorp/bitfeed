@@ -6,6 +6,7 @@
 		background-color: var(--primary-color, #555);
 		overflow: auto;
 		box-shadow: 0px 2px 5px -3px #000000;
+		z-index: 100;
 	}
 
 	.navbar a {
@@ -28,23 +29,90 @@
 		font-weight: bold;
 	}
 
+	.navbar-menu {
+		position: absolute;
+		width: var(--navbar-height, 3em);
+		height: var(--navbar-height, 3em);
+		right: 0;
+		top: 0;
+		padding-top: calc(0.25 * var(--navbar-height, 3em));
+		padding-left: calc(0.166666 * var(--navbar-height, 3em));
+		overflow: hidden;
+		cursor: pointer;
+		display: none;
+	}
+
+	.navbar-menu span
+	{
+		display: block;
+		width: calc(0.6666 * var(--navbar-height, 3em));
+		height: calc(0.083333 * var(--navbar-height, 3em));
+		margin-bottom: calc(0.116666667 * var(--navbar-height, 3em));
+		position: relative;
+		background-color: var(--color-primary-lighter);
+		border-radius: calc(0.1 * var(--navbar-height, 3em));
+		z-index: 1;
+	}
+
+	.navbar-menu:hover {
+		background-color: var(--color-primary-darker, #3b3b3b);
+	}
+
 	@media screen and (max-width: 500px) {
+
+		body {
+			padding-top: var(--navbar-height, 3em);
+		}
+
+		body.navbar-open main {
+			-webkit-transition : -webkit-filter 50ms linear;
+			transition : filter 50ms linear;
+			filter: blur(0.5em);
+			pointer-events: none;
+		}
+
+		.navbar {
+			position: absolute;
+			top: 0;
+			left: 0;
+			min-height: var(--navbar-height, 3em);;
+		}
+
+		.navbar a:first-child {
+			margin-top: var(--navbar-height, 3em);
+		}
+
 		.navbar a {
 			float: none;
+			display: none;
+		}
+
+		body.navbar-open .navbar a {
+			display: block;
+		}
+
+		.navbar-menu {
 			display: block;
 		}
 	}
 </style>
 
 <nav class="navbar">
-	<a href="/<%= version %>/feeds">Feeds</a> 
+	<a href="/<%= version %>/feeds">Feeds</a>
 	<a href="/<%= version %>/explore">Explore</a>
 	<a href="/<%= version %>/create">Create</a>
 	<a href="/<%= version %>/sign-in">Sign In</a>
+	<div class="navbar-menu">
+		<span></span>
+		<span></span>
+		<span></span>
+	</div>
 </nav>
 <script>
 	(() => {
 		const path = window.location.pathname;
+		const navbar = document.querySelector('.navbar');
+		const body = document.body;
 		const links = Array
 			.from(document.querySelectorAll('.navbar a'))
 			.sort((a, b) => { 
@@ -56,9 +124,18 @@
 		links.forEach(link => link.addEventListener('click', (e) => {
 			links.forEach(link => link.classList.remove('active'));
 			link.classList.add('active');
+			body.classList.remove('navbar-open');
 			const main = document.querySelector('main');
-			if (main) { main.classList.add('fade-out'); }
+			if (main) { main.classList.add('hidden'); }
+
+			const loader = document.querySelector('.loader');
+			if (loader) { loader.classList.add('visible'); }
 		}));
+
+
+		document
+			.querySelector('.navbar-menu')
+			.addEventListener('click', (e) => body.classList.toggle('navbar-open'));
 
 		for (let link of links) {
 			if (path.includes(link.pathname)) {

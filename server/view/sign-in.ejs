@@ -2,16 +2,18 @@
 <html lang="en" class="no-js">
 	<head>
 		<%- include('./partial/head') %>
+		<script type="text/javascript" src="<%= immutable('/js/hashes.min.js') %>"></script>
 	</head>
 	<body>
 		<%- include('./partial/navbar') %>
 
 		<style>
 			main {
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				margin-top: 20vh;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				-webkit-transform: translate(-50%, -50%);
+				transform: translate(-50%, -50%);
 			}
 
 			form, form div {
@@ -56,7 +58,59 @@
 				<a class="forgot" href="#">Forgot Username?</a>
 			</form>
 		</main>
+		<script>
+			(async () => {
+				const salt = "<%= public_salt %>";
+				const difficulty =  <%= tumble_difficulty %>;
+				const MD5 = Hashes.MD5;
+				const SHA1 = Hashes.SHA1;
+				const SHA256 = Hashes.SHA256;
+				const SHA512 = Hashes.SHA512;
+				const RMD160 = Hashes.RMD160;
 
+				const hashes = {
+					MD5: new MD5(),
+					SHA1: new SHA1(),
+					SHA256: new SHA256(),
+					SHA512: new SHA512(),
+					RMD160: new RMD160(),
+				};
+
+				async function tumble(username, password) {
+					username = username.toLowerCase();
+					
+					// prng sort our hashes
+					const hashers = Object
+						.entries(hashes)
+						.map(entry => [Hashes.CRC32(`${entry[0]}:${salt}:${username}:${password}`), entry[1]])
+						.sort((a, b) => a[0] - b[0])
+						.map(entry => entry[1]);
+
+					let tumbled = hashers[0].b64(`${salt}:${username}:${password}`);
+					let iterations = 0;
+					for (let index = 0; index < (difficulty * 2); index++) {
+						const hasher = hashers[index % hashers.length];
+						tumbled = hasher.b64(`${salt}:${username}:${password}:${tumbled}`);
+						if (!(Hashes.CRC32(tumbled) % difficulty)) { break; }
+					}
+
+					return tumbled;
+				}
+
+				document
+					.querySelector('button')
+					.addEventListener('click', async (e) => {
+						const username = document.querySelector('#username').value;
+						const password = document.querySelector('#password').value;
+						console.log(username, password);
+						e.preventDefault();
+						console.time('Tumbling');
+						const tumbled = await tumble(username, password);
+						console.log(tumbled);
+						console.timeEnd('Tumbling');
+					})
+			})();
+		</script>
 		<%- include('./partial/footer') %>
 	</body>
 </html>

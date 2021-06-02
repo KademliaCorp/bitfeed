@@ -15,6 +15,7 @@ exports.up = (pgm) => {
 			type: 'text',
 			unique: true,
 		},
+		password: { type: 'text' },
 		enabled: {
 			type: 'boolean',
 			notNull: true,

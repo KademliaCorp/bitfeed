@@ -14,6 +14,7 @@ module.exports = function middleware(app) {
 	app.use(express.urlencoded({ extended: false }));
 	app.use(cookieParser());
 
-	app.use(immutable_route);
-	app.use(`/:version/*`, versioned_route);
+	app.use(express.static('public'));
+	// app.use(immutable_route);
+	// app.use(`/:version/*`, versioned_route);
 };

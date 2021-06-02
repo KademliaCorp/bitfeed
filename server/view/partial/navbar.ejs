@@ -4,7 +4,7 @@
 	.navbar {
 		width: 100%;
 		background-color: var(--primary-color, #555);
-		overflow: auto;
+		overflow: hidden;
 		box-shadow: 0px 2px 5px -3px #000000;
 		z-index: 100;
 	}
@@ -65,8 +65,7 @@
 		}
 
 		body.navbar-open main {
-			-webkit-transition : -webkit-filter 50ms linear;
-			transition : filter 50ms linear;
+			transition : filter 100ms linear;
 			filter: blur(0.5em);
 			pointer-events: none;
 		}
@@ -75,7 +74,9 @@
 			position: absolute;
 			top: 0;
 			left: 0;
-			min-height: var(--navbar-height, 3em);;
+			min-height: var(--navbar-height, 3em);
+			max-height: var(--navbar-height, 3em);
+			transition: max-height 0ms linear;
 		}
 
 		.navbar a:first-child {
@@ -84,7 +85,12 @@
 
 		.navbar a {
 			float: none;
-			display: none;
+			display: block;
+		}
+
+		body.navbar-open .navbar {
+			max-height: 50vh;
+			transition: max-height 100ms linear;
 		}
 
 		body.navbar-open .navbar a {
@@ -96,12 +102,12 @@
 		}
 	}
 </style>
-
+<script src="/component/a-link.js" type="module"></script>
 <nav class="navbar">
-	<a href="/<%= version %>/feeds">Feeds</a>
-	<a href="/<%= version %>/explore">Explore</a>
-	<a href="/<%= version %>/create">Create</a>
-	<a href="/<%= version %>/sign-in">Sign In</a>
+	<a is="a-link" href="/feeds">Feeds</a>
+	<a is="a-link" href="/explore">Explore</a>
+	<a is="a-link" href="/create">Create</a>
+	<a is="a-link" href="/sign-in">Sign In</a>
 	<div class="navbar-menu">
 		<span></span>
 		<span></span>
@@ -128,8 +134,8 @@
 			const main = document.querySelector('main');
 			if (main) { main.classList.add('hidden'); }
 
-			const loader = document.querySelector('.loader');
-			if (loader) { loader.classList.add('visible'); }
+			const loader = document.querySelector('.page-loader');
+			if (loader) { loader.classList.remove('hidden'); }
 		}));
 
 
@@ -137,12 +143,16 @@
 			.querySelector('.navbar-menu')
 			.addEventListener('click', (e) => body.classList.toggle('navbar-open'));
 
+		body.addEventListener('click', (e) => body.classList.remove('navbar-open'));
+		navbar.addEventListener('click', (e) => e.cancelBubble = true);
+
 		for (let link of links) {
 			if (path.includes(link.pathname)) {
 				link.classList.add('active');
 				return;
 			}
 		}
+
 		document
 			.querySelector('.navbar a')
 			.classList

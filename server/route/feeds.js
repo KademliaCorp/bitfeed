@@ -3,11 +3,11 @@ const router = express.Router();
 const staticify = require('../helper/staticify');
 
 router.get('/', function(req, res, next) {
-	if (req.header('if-none-match')) {
-		res.sendStatus(304);
-		return res.end();
-	}
-	res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+	// if (req.header('if-none-match')) {
+	// 	res.sendStatus(304);
+	// 	return res.end();
+	// }
+	// res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
 	res.render('feeds', { immutable: staticify.getVersionedPath });
 });
 

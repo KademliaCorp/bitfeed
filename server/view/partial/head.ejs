@@ -8,8 +8,20 @@
 </script>
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap">
-<link rel="icon" href="<%= immutable('/image/favicon.ico') %>">
-<%- include('./route-cache') %>
-<%- include('../generated/prefetches') %>
+<link rel="icon" href="/image/favicon.ico">
+<!-- <%- include('./route-cache') %> -->
+<!-- <%- include('../generated/prefetches') %> -->
 <%- include('./reset.css.ejs') %>
 <%- include('./theme.css.ejs') %>
+<script type="text/javascript">
+	(async () => {
+		if ('serviceWorker' in navigator) {
+			window.addEventListener('load', async () => {
+				if ('serviceWorker' in navigator) {
+					await navigator.serviceWorker.register('/service-worker?<%= version %>');
+				}
+			});
+		}
+	})();
+</script>
+<script src="/service/i18n.js" type="module"></script>

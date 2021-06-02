@@ -4,6 +4,7 @@ const recursive = require('recursive-readdir');
 const XXHash = require('xxhash');
 const base62 = require('base62/lib/ascii');
 const hasher = new XXHash(0xCAFEBABE);
+const sha256File = require('sha256-file');
 const public = path.join(__dirname, 'public');
 const view = path.join(__dirname, 'view');
 
@@ -11,6 +12,7 @@ module.exports = async function generators(app) {
 
 	// generate app version based on hashes
 	await new Promise((res, rej) => {
+		if (fs.existsSync('./version')) { fs.unlinkSync('./version'); }
 		recursive(__dirname, function (err, files) {
 			if (err) { return rej(err); }
 	
@@ -31,8 +33,13 @@ module.exports = async function generators(app) {
 	await (async function prefetches() {
 		const prefetches = (await recursive(public, ['.css', '.js', '.html']))
 			.sort()
-			.map(file => `<link rel="prefetch" href="<%= immutable('${file.replace(public, '')}') %>">`);
+			//.filter(file => !file.startsWith(path.join(public, 'i18n'))) 	// don't prefetch all the language files
+			.map(file => [ file.replace(public, ''), sha256File(file) ])
+			.reduce((p = {}, c) => {
+				p[c[0]] = Buffer.from(c[1]).toString('base64');
+				return p;
+			}, {});
 		
-		fs.writeFileSync(path.join(view, 'generated', 'prefetches.ejs'), prefetches.join('\n'));
+		fs.writeFileSync(path.join(view, 'generated', 'prefetches.ejs'), JSON.stringify(prefetches));
 	})();
 }

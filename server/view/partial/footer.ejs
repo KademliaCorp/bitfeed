@@ -1,2 +1,13 @@
 <script src="/updater?v=<%= version %>"></script>
-<%- include('./loader.ejs') %>
+<script src="/component/loader-kebab.js" type="module"></script>
+
+<style>
+	.page-loader {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+</style>
+
+<loader-kebab class="hidden page-loader"></loader-kebab>

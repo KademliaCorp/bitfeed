@@ -1,9 +1,16 @@
 const db = require('../db');
 module.exports = class User {
-    static getByUsername(username) {
+
+    static async getCredentialsByUsername(username) {
         const sql = db();
-        sql`
-            
+        username = (username || '').toLowerCase();
+        const [creds] = await sql`
+            SELECT 
+                username,
+                password
+            FROM "user"
+            WHERE username = ${username}
         `;
+        return creds;
     }
 }

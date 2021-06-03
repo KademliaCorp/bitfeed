@@ -1,17 +1,12 @@
 require('dotenv').config();
 const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const immutable_route = require('./middleware/immutable-route');
-const versioned_route = require('./middleware/versioned-route');
-const recursive = require('recursive-readdir');
-const fs = require('fs');
 const app = express();
-const routes = require('./routes');
-const generators = require('./generators');
-const locals = require('./locals');
-const middleware = require('./middleware');
+const routes = require('./collective/routes');
+const generators = require('./collective/generators');
+const locals = require('./collective/locals');
+const middleware = require('./collective/middleware');
+const apis = require('./collective/apis');
 
 (async () => {
 	// generate prefetch & hash version
@@ -26,6 +21,7 @@ const middleware = require('./middleware');
 	//apply routes
 	routes(app);
 
+	apis(app);
 	// app.use('/', (req, res, next) => res.redirect(`/${config.version}`));
 
 	// error handler

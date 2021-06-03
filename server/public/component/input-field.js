@@ -33,6 +33,14 @@ const css = /* css */ `
 		border: solid var(--accent-color) 1px;
 		outline: none;
 	}
+
+	:host([state="invalid"]) input {
+		border-color: var(--color-invalid);
+	}
+
+	:host([state="invalid"]) label {
+		color: var(--color-invalid);
+	}
 `;
 
 

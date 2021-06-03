@@ -27,7 +27,7 @@
 			}
 		</style>
 		<main>
-			<sign-in difficulty="<%= tumble_difficulty %>" salt="<%= public_salt %>" state="awaiting-user"></sign-in>
+			<sign-in submit-to='/api/sign-in' difficulty="<%= tumble_difficulty %>" salt="<%= public_salt %>" state="awaiting-user"></sign-in>
 		</main>
 		<script type="none">
 			(async () => {

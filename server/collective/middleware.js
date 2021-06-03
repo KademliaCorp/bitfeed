@@ -1,8 +1,8 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const immutable_route = require('./middleware/immutable-route');
-const versioned_route = require('./middleware/versioned-route');
+const immutable_route = require('../middleware/immutable-route');
+const versioned_route = require('../middleware/versioned-route');
 
 module.exports = function middleware(app) {
 	// view engine setup

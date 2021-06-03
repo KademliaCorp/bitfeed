@@ -8,6 +8,9 @@
 		--color-primary-light: #555;
 		--color-primary-darker: #3b3b3b;
 		--color-primary-darkest: #1f1f1f;
+		
+		--color-fail: #e4720dfa;
+		--color-invalid: var(--color-fail);
 
 		/* component specific */
 		--navbar-height: 3em;
@@ -41,6 +44,24 @@
 		}
 		100% {
 			opacity: 0;
+		}
+	}
+
+	@keyframes shake {
+		10%, 90% {
+			transform: translate3d(-1px, 0, 0);
+		}
+
+		20%, 80% {
+			transform: translate3d(2px, 0, 0);
+		}
+
+		30%, 50%, 70% {
+			transform: translate3d(-4px, 0, 0);
+		}
+
+		40%, 60% {
+			transform: translate3d(4px, 0, 0);
 		}
 	}
 
@@ -79,6 +100,13 @@
 		animation-iteration-count: 1;
 		animation-timing-function: ease-out;
 		animation-duration: 100ms;
+	}
+
+	.shake {
+		animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+		transform: translate3d(0, 0, 0);
+		backface-visibility: hidden;
+		perspective: 1000px;
 	}
 
 	.hidden {

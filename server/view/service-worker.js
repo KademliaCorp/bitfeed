@@ -4,7 +4,7 @@ const prefetches = Object.keys(<%- include('./generated/prefetches') %>);
 const routes = [
 	'/sign-in',
 	'/explore',
-	'/feeds',
+	'/my-feeds',
 	'/create',
 ];
 const toCache = [ ...prefetches, ...routes ];
@@ -51,6 +51,6 @@ self.addEventListener('fetch', async function(event) {
 	}
 	catch(error) {
 		console.error(error);;
-		event.respondWith(await fetch(event.request));
+		event.respondWith(fetch(event.request));
 	}
 });

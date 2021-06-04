@@ -3,8 +3,9 @@
 
 	.navbar {
 		width: 100%;
+		min-height: var(--navbar-height, 3em);
+		max-height: var(--navbar-height, 3em);
 		background-color: var(--primary-color, #555);
-		overflow: hidden;
 		box-shadow: 0px 2px 5px -3px #000000;
 		z-index: 100;
 	}
@@ -58,7 +59,11 @@
 		background-color: var(--color-primary-darker, #3b3b3b);
 	}
 
-	@media screen and (max-width: 500px) {
+	.navbar a[href="/sign-out"] {
+		float: right;
+	}
+
+	@media screen and (max-width: 550px) {
 
 		body {
 			padding-top: var(--navbar-height, 3em);
@@ -77,6 +82,8 @@
 			min-height: var(--navbar-height, 3em);
 			max-height: var(--navbar-height, 3em);
 			transition: max-height 0ms linear;
+			overflow: hidden;
+			padding-top: var(--navbar-height, 3em);
 		}
 
 		.navbar a:first-child {
@@ -97,17 +104,27 @@
 			display: block;
 		}
 
+		body.navbar-open .navbar a[hidden], .navbar a[hidden] {
+			display: none;
+		}
+
 		.navbar-menu {
 			display: block;
+		}
+
+		.navbar a[href="/sign-out"] {
+			float: none;
 		}
 	}
 </style>
 <script src="/component/a-link.js" type="module"></script>
 <nav class="navbar">
-	<a is="a-link" href="/feeds">Feeds</a>
+	<a is="a-link" hidden href="/my-feeds">My Feeds</a>
 	<a is="a-link" href="/explore">Explore</a>
-	<a is="a-link" href="/create">Create</a>
-	<a is="a-link" href="/sign-in">Sign In</a>
+	<a is="a-link" hidden href="/create">Create</a>
+	<a is="a-link" hidden href="/sign-in">Sign In</a>
+	<a is="a-link" hidden href="/settings">Settings</a>
+	<a is="a-link" hidden href="/sign-out">Sign Out</a>
 	<div class="navbar-menu">
 		<span></span>
 		<span></span>
@@ -116,6 +133,22 @@
 </nav>
 <script>
 	(() => {
+		const isSignedIn = document
+			.cookie
+			.split(';')
+			.map(kv => kv.trim())
+			.includes('signed-in=true');
+
+		if (isSignedIn) {
+			document
+				.querySelectorAll('[href="/my-feeds"], [href="/create"], [href="/settings"], [href="/sign-out"]')
+				.forEach(element => element.removeAttribute('hidden', null))
+		} else {
+			document
+				.querySelectorAll('[href="/sign-in"]')
+				.forEach(element => element.removeAttribute('hidden', null))
+		}
+
 		const path = window.location.pathname;
 		const navbar = document.querySelector('.navbar');
 		const body = document.body;

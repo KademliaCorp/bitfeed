@@ -24,6 +24,13 @@ const apis = require('./collective/apis');
 	apis(app);
 	// app.use('/', (req, res, next) => res.redirect(`/${config.version}`));
 
+	app.use(`/`, (req, res, next) => {
+		if (req.cookies['signed-in'] === 'true') {
+			return res.redirect('/my-feeds');
+		}
+		return res.redirect('/explore');
+	});
+
 	// error handler
 	app.use(function (err, req, res, next) {
 		// set locals, only providing error in development

@@ -17,8 +17,8 @@ router.get('/', async (req, res, next) => {
 	}
 
 	const result = await ejs.renderFile(path.join(req.app.locals.path.view, 'service-worker.js'), req.app.locals);
-	res.setHeader('Content-Type', 'text/javascript; charset=UTF-8');
 	res.setHeader('ETag', version);
+	res.setHeader('Content-Type', 'text/javascript; charset=UTF-8');
 	res.end(result);
 });
 

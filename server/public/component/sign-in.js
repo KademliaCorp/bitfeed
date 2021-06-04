@@ -131,7 +131,7 @@ export const GlobalEvents = new (
 		<style>${css}</style>
 		<section class="user-input">
 			<input-field id="username" label="username" type="text" title="username" placeholder="username" autofocus></input-field>
-			<input-field id="password" label="password" type="text" title="password" placeholder="password"></input-field>
+			<input-field id="password" label="password" type="password" title="password" placeholder="password"></input-field>
 			<button type="submit">Login</button>
 			<a class="forgot" href="#">Forgot Username?</a>
 		</section>
@@ -165,6 +165,10 @@ export const GlobalEvents = new (
 				return this.getAttribute('submit-to');
 			}
 
+			get navigateAfter() {
+				return this.getAttribute('navigate-after');
+			}
+
 			get state() {
 				return this.getAttribute('state');
 			}
@@ -184,14 +188,13 @@ export const GlobalEvents = new (
 					.forEach(field => field.setAttribute('state', null));
 			};
 
-			async _setFailedState(message) {
-				console.log('MESSAGE: ', message);
+			async _setFailedState(message = 'auth/invalid') {
 				this.state = STATE_FAILED;
 				this
 					.shadowRoot
 					.querySelectorAll('input-field')
 					.forEach(field => field.setAttribute('state', 'invalid'));
-				this.dispatchEvent(new CustomEvent(SIGN_IN_FAILED, { message: await i18n._(message || 'auth/invalid') }));
+				this.dispatchEvent(new CustomEvent(SIGN_IN_FAILED, { message: await i18n._(message) }));
 			}
 
 			_syncAttributes() {
@@ -244,6 +247,7 @@ export const GlobalEvents = new (
 							const result = await response.json();
 							if (result.loggedIn) {
 								this.state = STATE_SUCCESS;
+								window.location.href = this.navigateAfter;
 							} else {
 								this._setFailedState();
 							}

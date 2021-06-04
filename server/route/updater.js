@@ -14,10 +14,8 @@ router.get('/', function(req, res, next) {
 				for(let registration of registrations) {
 					await registration.unregister();
 				}
-				location.reload(true);
 			})()
 		}
 	`: '');
 });
-;
 module.exports = router;

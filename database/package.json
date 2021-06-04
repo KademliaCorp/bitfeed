@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "migrate": "node-pg-migrate",
-    "migrate:up": "DATABASE_URL=postgres://postgres:dev_123@localhost:5432/bitfeed npm run migrate up",
-    "migrate:down": "DATABASE_URL=postgres://postgres:dev_123@localhost:5432/bitfeed npm run migrate down"
+    "migrate:up": "NODE_ENV=development DATABASE_URL=postgres://postgres:dev_123@localhost:5432/bitfeed npm run migrate up",
+    "migrate:down": "NODE_ENV=development DATABASE_URL=postgres://postgres:dev_123@localhost:5432/bitfeed npm run migrate down"
   },
   "author": "Hedzer",
   "license": "ISC",

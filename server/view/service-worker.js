@@ -37,7 +37,10 @@ self.addEventListener('fetch', async function(event) {
 					if (response) { return response; }
 
 					response = await fetch(event.request);
-					if (new URL(event.request.url).pathname in cachable) {
+					const cacheControl = response.headers.get('Cache-Control') || '';
+					const isCachable = new URL(event.request.url).pathname in cachable;
+					const isImmutable = cacheControl.toLocaleLowerCase().includes('immutable');
+					if (isCachable || isImmutable) {
 						await cache.put(event.request, response.clone());
 					} 
 					return response;
@@ -50,7 +53,7 @@ self.addEventListener('fetch', async function(event) {
 		)
 	}
 	catch(error) {
-		console.error(error);;
+		console.error(error);
 		event.respondWith(fetch(event.request));
 	}
 });

@@ -23,7 +23,7 @@ module.exports = async function generators(app) {
 			const version = base62.encode(hasher.digest());
 			console.timeEnd('Hashing')
 			console.log(`Hash Version: ${version}`);
-			fs.writeFileSync('../version', version);
+			fs.writeFileSync('version', version);
 			app.locals.version = version;
 			res()
 		});

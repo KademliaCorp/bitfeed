@@ -64,7 +64,7 @@ window.customElements.define(
 		}
 
 		static get observedAttributes() {
-    		return [ 'label', 'value', 'placeholder', 'autofocus' ];
+			return [ 'label', 'value', 'placeholder', 'autofocus' ];
   		}
 
 		attributeChangedCallback(name, _old, _new) {

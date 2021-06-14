@@ -1,13 +1,25 @@
 <style>
 	:root {
-		--primary-color: #555;
-		--accent-color: #96c705;
-		--primary-text-color: white;
-		--accent-text-color: white;
-		--color-primary-lighter: rgb(196, 192, 192);
-		--color-primary-light: #555;
-		--color-primary-darker: #3b3b3b;
-		--color-primary-darkest: #1f1f1f;
+		--primary-color: #555f;
+		--accent-color: #96c705ff;
+		--primary-text-color: #ffff;
+		--accent-text-color: #ffff;
+		--color-primary-lighter: rgba(196, 192, 192, 255);
+		--color-primary-light: #555f;
+		--color-primary-dark: #3b3b3bff;
+		--color-primary-darker: #0b0b0bff;
+		--color-primary-darkest: #1f1f1fff;
+
+		/* transparents for gradients */
+		--primary-color-t: #5550;
+		--accent-color-t: #96c70500;
+		--primary-text-color-t: #fff0;
+		--accent-text-color-t: #fff0;
+		--color-primary-lighter-t: rgba(196, 192, 192, 0);
+		--color-primary-light-t: #5550;
+		--color-primary-dark-t: #3b3b3b00;
+		--color-primary-darker-t: #0b0b0b00;
+		--color-primary-darkest-t: #1f1f1f00;
 		
 		--color-fail: #e4720dfa;
 		--color-invalid: var(--color-fail);
@@ -66,7 +78,7 @@
 	}
 
     body {
-		background: var(--color-primary-darker);
+		background: var(--color-primary-dark);
 	}
 
 	main {

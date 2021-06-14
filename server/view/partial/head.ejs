@@ -15,10 +15,10 @@
 	(async () => {
 		if ('serviceWorker' in navigator) {
 			window.addEventListener('load', async () => {
-				if ('serviceWorker' in navigator) {
-					await navigator.serviceWorker.register('/service-worker?<%= version %>');
-				}
 			});
+			if ('serviceWorker' in navigator) {
+				await navigator.serviceWorker.register('/service-worker?<%= version %>');
+			}
 		}
 	})();
 </script>

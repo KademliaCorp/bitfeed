@@ -8,7 +8,7 @@ export const GlobalEvents = new (
 		
 		constructor() {
 			super();
-			this.addEventListener(NAVIGATION_REQUESTED, this.onNavigationRequested);
+			this.addEventListener(NAVIGATION_REQUESTED, (e) => this.onNavigationRequested(e));
 		}
 		
 		EventNames = {
@@ -16,13 +16,9 @@ export const GlobalEvents = new (
 			NAVIGATION_FETCHING,
 		};
 		
-		onNavigationRequested() {
-			
-		}
+		onNavigationRequested(e) { }
 
-		onNavigationFetching() {
-			
-		}
+		onNavigationFetching() { }
 	}
 )();
 
@@ -32,12 +28,13 @@ window.customElements.define(
 		constructor() {
 			super();
 			this.addEventListener('click', (e) => {
-				// e.preventDefault();
-				this.GlobalEvents.dispatchEvent(new Event(NAVIGATION_REQUESTED, e));
+				//e.preventDefault();
+				this.GlobalEvents.dispatchEvent(new CustomEvent(NAVIGATION_REQUESTED, { detail: e }));
 			});
 		}
 
 		GlobalEvents = GlobalEvents;
+		static GlobalEvents = GlobalEvents;
 	},
 	{ extends: 'a' }
 );

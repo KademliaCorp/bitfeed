@@ -86,10 +86,6 @@
 			padding-top: var(--navbar-height, 3em);
 		}
 
-		.navbar a:first-child {
-			margin-top: var(--navbar-height, 3em);
-		}
-
 		.navbar a {
 			float: none;
 			display: block;
@@ -131,7 +127,7 @@
 		<span></span>
 	</div>
 </nav>
-<script>
+<script type="module">
 	(() => {
 		const isSignedIn = document
 			.cookie
@@ -160,17 +156,25 @@
 				return -1;
 			});
 
-		links.forEach(link => link.addEventListener('click', (e) => {
+
+		const onNavigationRequested = (e) => {
 			links.forEach(link => link.classList.remove('active'));
-			link.classList.add('active');
-			body.classList.remove('navbar-open');
+			let link = e.target;
 			const main = document.querySelector('main');
-			if (main) { main.classList.add('hidden'); }
-
 			const loader = document.querySelector('.page-loader');
-			if (loader) { loader.classList.remove('hidden'); }
-		}));
 
+			if (link instanceof EventTarget && !(link instanceof HTMLAnchorElement)) { link = e.detail.target; }
+			if (link) { link.classList.add('active'); }
+			
+			if (body) { body.classList.remove('navbar-open'); }
+			if (main) { main.classList.add('hidden'); }
+			if (loader) { loader.classList.remove('hidden'); }
+		};
+		links.forEach(link => link.addEventListener('click', onNavigationRequested));
+		window.customElements.whenDefined('a-link').then(() => {
+			const ALink = customElements.get('a-link');
+			ALink.GlobalEvents.addEventListener(ALink.GlobalEvents.EventNames.NAVIGATION_REQUESTED, onNavigationRequested);
+		});
 
 		document
 			.querySelector('.navbar-menu')

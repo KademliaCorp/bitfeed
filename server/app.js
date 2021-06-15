@@ -24,7 +24,7 @@ const apis = require('./collective/apis');
 	apis(app);
 	// app.use('/', (req, res, next) => res.redirect(`/${config.version}`));
 
-	app.use(`/`, (req, res, next) => {
+	app.get(`/`, (req, res, next) => {
 		if (req.cookies['signed-in'] === 'true') {
 			return res.redirect('/my-feeds');
 		}

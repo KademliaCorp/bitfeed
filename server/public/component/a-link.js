@@ -28,7 +28,8 @@ window.customElements.define(
 		constructor() {
 			super();
 			this.addEventListener('click', (e) => {
-				//e.preventDefault();
+				if (!e.target.href) { return; }
+
 				this.GlobalEvents.dispatchEvent(new CustomEvent(NAVIGATION_REQUESTED, { detail: e }));
 			});
 		}
